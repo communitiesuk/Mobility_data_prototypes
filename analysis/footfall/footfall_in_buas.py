@@ -12,7 +12,7 @@ import pyodbc
 
 from analysis.Local_travel_areas.LTA_queries import *
 from analysis.Local_travel_areas.LTA_functions import *
-from analysis.msoa_jobs_functions import *
+from analysis.Auxiliary_msoa_data_functions import *
 from analysis.utils import *
 
 def read_bua_data() -> pd.DataFrame:
@@ -114,7 +114,7 @@ def calculate_overlap_and_write_csv(bua_totals: pd.DataFrame, overlap_threshold:
     bua_shp = gpd.read_file("Q:/GI_Data/Boundaries/BUAs/BUA_2022_GB.shp").to_crs(epsg=27700)
     bua_shp = bua_shp[bua_shp["BUA22CD"].isin(bua_totals["BUA22CD"])]
     bua_shp.rename(columns={"area": "bua_area"}, inplace=True)
-    lad_shp = gpd.read_file("Q:/GI_Data/Boundaries/Districts/2022/Local_Authority_Districts_(December_2022)_Boundaries_UK_BGC/LAD_DEC_2022_UK_BGC.shp").to_crs(epsg=27700)
+    lad_shp = gpd.read_file("Q:/GI_Data/Boundaries/Districts/2022/Local_Authority_Districts_(December_2022)_Boundaries_UK_BGC/LAD_DEC_2022_UK_BGC_V2.shp").to_crs(epsg=27700)
     # calc overlap
     res_intersection = bua_shp.overlay(lad_shp, how='intersection')
     res_intersection.loc[:, "perc_bua_in_lad"] = round(res_intersection.area / res_intersection["bua_area"], 3)
